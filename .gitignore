@@ -1,7 +1,11 @@
-config/local.yml
-data
+/config/local.yml
 
-!.keep
+/data/*
+!/data/posts
+!/data/.keep
+
+/data/posts/*
+!/data/posts/.keep
 
 # Logs
 logs

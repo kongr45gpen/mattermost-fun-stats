@@ -40,11 +40,18 @@ let fetch = async function() {
 
     const teamId = team.id;
 
+    // Fetch all the users
+    const townSquare = await client.getChannelByName(teamId, 'town-square');
+    const users = await client.getProfilesInChannel(townSquare.id, 0, 200);
+    console.log("Found " + Object.keys(users).length + " users");
+    fs.writeFile("data/users.json", JSON.stringify(users), err => {if (err) console.error(err)});
+
     // Fetch all the channels
     let channels = await client.getChannels(teamId, 0, 1000);
     channels = channels.filter(chan => chan.type === 'O'); // Only public channels
 
     console.log("Found " + channels.length + " channels.");
+    fs.writeFile("data/channels.json", JSON.stringify(channels), err => {if (err) console.error(err)});
 
     for (channel in channels) {
         channel = channels[channel];
@@ -59,7 +66,7 @@ let fetch = async function() {
                 break;
             }
         }
-        await fs.writeFile("data/" + channel.name + ".json", JSON.stringify(posts));
+        fs.writeFile("data/posts/" + channel.name + ".json", JSON.stringify(posts), err => {if (err) console.error(err)});
     }
 };
 
