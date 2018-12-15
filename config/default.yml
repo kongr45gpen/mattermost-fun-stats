@@ -1,0 +1,3 @@
+mattermost:
+  url: "https://your-mattermost-url.com"
+  token: "yourtokenhere"
