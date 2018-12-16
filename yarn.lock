@@ -101,6 +101,10 @@ deep-equal@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/deep-equal/-/deep-equal-1.0.1.tgz#f5d260292b660e084eff4cdbc9f08ad3247448b5"
 
+delay@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/delay/-/delay-4.1.0.tgz#474cd28809da41d1a048a70a1d835f47ac377cd2"
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
@@ -154,7 +158,6 @@ gfycat-sdk@1.4.18:
 greek-utils@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/greek-utils/-/greek-utils-1.2.2.tgz#79c0f4ffbde97fb0c5b9f49503e1f333412385ce"
-  integrity sha1-ecD0/73pf7DFufSVA+HzM0Ejhc4=
 
 harmony-reflect@1.6.0:
   version "1.6.0"

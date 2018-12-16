@@ -4,6 +4,7 @@ const inquirer = require('inquirer');
 const config = require('config');
 const fs = require('fs');
 const _ = require('lodash');
+const delay = require('delay');
 if (!global.WebSocket) {
     global.WebSocket = require('ws');
 }
@@ -39,12 +40,16 @@ let fetch = async function() {
         });
     }
 
+    fs.writeFile("data/team.json", JSON.stringify(team), err => {if (err) console.error(err)});
     const teamId = team.id;
 
     // Fetch all the users
     const townSquare = await client.getChannelByName(teamId, 'town-square');
     const users = await client.getProfilesInChannel(townSquare.id, 0, 200);
     console.log("Found " + Object.keys(users).length + " users");
+    _.each(users, async function(user) {
+        user.profile_picture = await client.getProfilePictureUrl(user.id);
+    });
     fs.writeFile("data/users.json", JSON.stringify(users), err => {if (err) console.error(err)});
 
     // Fetch all the channels
@@ -55,6 +60,7 @@ let fetch = async function() {
     fs.writeFile("data/channels.json", JSON.stringify(channels), err => {if (err) console.error(err)});
 
     for (channel in channels) {
+        await delay(500);
         channel = channels[channel];
         let posts = {};
         let page = 0;
@@ -63,6 +69,7 @@ let fetch = async function() {
             let newPosts = await client.getPosts(channel.id, page++, 500);
             _.forEach(newPosts.posts, async function(post) {
                 if (post.has_reactions) {
+                    await delay(500);
                     post.reactions = await client.getReactionsForPost(post.id);
                 } else {
                     post.reactions = {};

@@ -6,6 +6,7 @@
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "config": "^3.0.0",
+    "delay": "^4.1.0",
     "greek-utils": "^1.2.2",
     "inquirer": "^6.2.1",
     "isomorphic-fetch": "^2.2.1",
