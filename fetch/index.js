@@ -3,6 +3,7 @@ require('isomorphic-fetch');
 const inquirer = require('inquirer');
 const config = require('config');
 const fs = require('fs');
+const _ = require('lodash');
 if (!global.WebSocket) {
     global.WebSocket = require('ws');
 }
@@ -59,7 +60,14 @@ let fetch = async function() {
         let page = 0;
         while (true) {
             console.log("Fetching page #" + page + " of channel " + channel.name + " (" + Object.keys(posts).length + " total posts)");
-            const newPosts = await client.getPosts(channel.id, page++, 500);
+            let newPosts = await client.getPosts(channel.id, page++, 500);
+            _.forEach(newPosts.posts, async function(post) {
+                if (post.has_reactions) {
+                    post.reactions = await client.getReactionsForPost(post.id);
+                } else {
+                    post.reactions = {};
+                }
+            });
             posts = {...posts, ...(newPosts.posts)};
 
             if (Object.values(newPosts.posts).length <= 0 || page >= 100) {
