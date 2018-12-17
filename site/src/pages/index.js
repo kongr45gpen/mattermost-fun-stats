@@ -2,18 +2,76 @@ import React from 'react'
 import { Link } from 'gatsby'
 
 import Layout from '../components/layout'
-import Image from '../components/image'
+
+import NumberFormat from 'react-number-format';
+
+import serviceIcon1 from '../images/service-icon-1.png'
+import serviceIcon3 from '../images/service-icon-3.png'
+import raccoon from '../images/raccoon.svg'
 
 const IndexPage = () => (
   <Layout>
     <h1>Hi people</h1>
     <p>Welcome to your new Gatsby site.</p>
-      <div className="btn btn-default">Hello worldssmo</div>
+      <button type="button" className="btn btn-primary">Primary</button>&nbsp;
+      <button type="button" className="btn btn-secondary">Secondary</button>&nbsp;
+      <button type="button" className="btn btn-success">Success</button>&nbsp;
+      <button type="button" className="btn btn-danger">Danger</button>&nbsp;
+      <button type="button" className="btn btn-warning">Warning</button>&nbsp;
+      <button type="button" className="btn btn-info">Info</button>&nbsp;
+      <button type="button" className="btn btn-light">Light</button>&nbsp;
+      <button type="button" className="btn btn-dark">Dark</button>&nbsp;
     <p>Now go build something great.</p>
-    <div style={{ maxWidth: '300px', marginBottom: '1.45rem' }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
+
+      <section className="gray-bg section-padding" id="service-page">
+          <div className="container">
+              <div className="row">
+                  <div className="col-xs-12 col-sm-4">
+                      <div className="box">
+                          <div className="box-icon">
+                              <img src={ serviceIcon1 } alt="" />
+                          </div>
+                          <h4>TOTAL POSTS</h4>
+                          <p className="large-information">
+                              <NumberFormat value={144000} displayType={'text'} thousandSeparator={true} />
+                          </p>
+                      </div>
+                  </div>
+                  <div className="col-xs-12 col-sm-4">
+                      <div className="box">
+                          <div className="box-icon">
+                              <img src={ serviceIcon3 } alt="" />
+                          </div>
+                          <h4>TOTAL HOURS SPENT TYPING</h4>
+                          <p className="large-information"><NumberFormat value={1440000} displayType={'text'} thousandSeparator={true} /></p>
+                      </div>
+                  </div>
+                  <div className="col-xs-12 col-sm-4">
+                      <div className="box">
+                          <div className="box-icon">
+                              <img src={ raccoon } alt="" />
+                          </div>
+                          <h4>TOTAL RACCOONS</h4>
+                          <p className="large-information"><NumberFormat value={2} displayType={'text'} thousandSeparator={true} /></p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      <footer className="footer-area relative sky-bg" id="contact-page">
+          <div className="absolute footer-bg"></div>
+          <div className="footer-bottom">
+              <div className="container">
+                  <div className="row">
+                      <div className="col-xs-12 text-center">
+                          <p>Mattermost instance statistics. Designed by
+                              Quomodotheme. Raccoon icon from <a href="https://www.iconfinder.com/icons/3406424/animal_furry_pet_raccoon_wildlife_zoo_icon">Chanut is</a>.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </footer>
   </Layout>
 )
 
