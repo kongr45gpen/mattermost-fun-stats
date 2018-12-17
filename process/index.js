@@ -59,11 +59,19 @@ let reactions = {};
 let words = {};
 
 _.forEach(posts, function(post) {
+    // Ignored dates
+    if (post.create_at < config.get('processing.after')) return;
+
     // Time counting
     const created = new Date(post.create_at);
     if (hours[created.getHours()]) {
         hours[created.getHours()].count += 1;
     }
+
+    // Ignored channels and users
+    if (config.get('processing.ignored_channels').includes(channels[post.channel_id].name)) return;
+    if (users[post.user_id] === undefined) return;
+    if (config.get('processing.ignored_users').includes(users[post.user_id].name)) return;
 
     // Ignore webhook posts
     if (post.props.from_webhook) return;
@@ -162,10 +170,17 @@ _.forEach(posts, function(post) {
     }
 });
 
+const output = {
+    users: users,
+    posts: posts,
+    channels: channels,
+    hours: hours,
+    hashtags: hashtags,
+    reactions: reactions,
+    words: words
+};
+fs.writeFileSync("site/data/stats.json", JSON.stringify(output, null, 2));
+
+
 // console.log(_.map(words, c=>c.stats));
 // console.log(_.filter(posts, u => u.message[1] == 'o'));
-
-let parse = async function() {
-
-}
-parse();

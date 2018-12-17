@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 
 import Layout from '../components/layout'
+import Statistics from '../components/statistics'
 
 import NumberFormat from 'react-number-format';
 
@@ -23,41 +24,7 @@ const IndexPage = () => (
       <button type="button" className="btn btn-dark">Dark</button>&nbsp;
     <p>Now go build something great.</p>
 
-      <section className="gray-bg section-padding" id="service-page">
-          <div className="container">
-              <div className="row">
-                  <div className="col-xs-12 col-sm-4">
-                      <div className="box">
-                          <div className="box-icon">
-                              <img src={ serviceIcon1 } alt="" />
-                          </div>
-                          <h4>TOTAL POSTS</h4>
-                          <p className="large-information">
-                              <NumberFormat value={144000} displayType={'text'} thousandSeparator={true} />
-                          </p>
-                      </div>
-                  </div>
-                  <div className="col-xs-12 col-sm-4">
-                      <div className="box">
-                          <div className="box-icon">
-                              <img src={ serviceIcon3 } alt="" />
-                          </div>
-                          <h4>TOTAL HOURS SPENT TYPING</h4>
-                          <p className="large-information"><NumberFormat value={1440000} displayType={'text'} thousandSeparator={true} /></p>
-                      </div>
-                  </div>
-                  <div className="col-xs-12 col-sm-4">
-                      <div className="box">
-                          <div className="box-icon">
-                              <img src={ raccoon } alt="" />
-                          </div>
-                          <h4>TOTAL RACCOONS</h4>
-                          <p className="large-information"><NumberFormat value={2} displayType={'text'} thousandSeparator={true} /></p>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
+      <Statistics/>
 
       <footer className="footer-area relative sky-bg" id="contact-page">
           <div className="absolute footer-bg"></div>

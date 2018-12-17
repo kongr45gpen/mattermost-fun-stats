@@ -45,9 +45,9 @@ let fetch = async function() {
 
     // Fetch all the users
     const townSquare = await client.getChannelByName(teamId, 'town-square');
-    const users = await client.getProfilesInChannel(townSquare.id, 0, 200);
+    let users = await client.getProfilesInChannel(townSquare.id, 0, 200);
     console.log("Found " + Object.keys(users).length + " users");
-    _.each(users, async function(user) {
+    await _.each(users, async function(user) {
         user.profile_picture = await client.getProfilePictureUrl(user.id);
     });
     fs.writeFile("data/users.json", JSON.stringify(users), err => {if (err) console.error(err)});
