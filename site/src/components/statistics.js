@@ -6,6 +6,7 @@ import serviceIcon1 from "../images/service-icon-1.png";
 import NumberFormat from "react-number-format";
 import serviceIcon3 from "../images/service-icon-3.png";
 import raccoon from "../images/raccoon.svg";
+import WordCloud from 'react-wordcloud';
 
 import _ from "lodash";
 
@@ -153,11 +154,35 @@ const AllChannels = function() {
     </section>
 };
 
+const HashTagCloud = function () {
+    const words = [
+        {word: 'hello', value: 3},
+        {word: 'world', value: 1},
+        {word: 'github', value: 1},
+        {word: 'code', value: 1},
+    ];
+
+    return <section className="gray-bg section-padding">
+        <div className="container">
+            <div style={{width: '100%', height: '300px'}}>
+            <WordCloud
+                words={_.map(stats.hashtags, function(s, h) {
+                    return {word: h, value: s.count };
+                })}
+                wordCountKey='value'
+                wordKey='word'
+            />
+            </div>
+        </div>
+    </section>
+};
+
 const Statistics = ({ children }) => (
     <div>
         <LargeNumbers/>
         <LargestPosters/>
         <AllChannels/>
+        <HashTagCloud/>
     <b>{Object.keys(stats.posts).length}</b>
     </div>
 )
