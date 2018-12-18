@@ -7,8 +7,14 @@ import NumberFormat from "react-number-format";
 import serviceIcon3 from "../images/service-icon-3.png";
 import raccoon from "../images/raccoon.svg";
 import WordCloud from 'react-wordcloud';
+import EmojiConvertor from "emoji-js";
 
 import _ from "lodash";
+
+let emoji = new EmojiConvertor();
+emoji.img_sets.apple.sheet = 'https://helit.org/sheet_apple_64.png';
+emoji.use_sheet = true;
+// emoji.replace_mode = 'unified';
 
 const Channel = (props) => (
   <span>
@@ -32,15 +38,21 @@ const User = function(props) {
 };
 
 const HashTag = function(props) {
-    if (!_.isEmpty(props.hashtag)) {
+    if (!_.isEmpty(props.hashtag) && !_.isEmpty(props.hashtag.props.children) && props.hashtag.props.children !== undefined) {
         return <span>
             <span className="text-muted hashtag-hash">#</span>
-            { props.hashtag.props.children.replace(/^\#/, '') }
+            { props.hashtag.props.children.replace(/^#/, '') }
         </span>
     } else {
         return <span />
     }
-}
+};
+
+const Emoji = function(props) {
+    // TODO: Custom emojis
+    return <span dangerouslySetInnerHTML={{__html: emoji.replace_colons(':' + props.shortcode +':').replace(/:[a-z_0-9]+:/,'')}}>
+    </span>
+};
 
 const LargeNumbers = () => (
     <section className="gray-bg section-padding" id="service-page">
@@ -145,6 +157,8 @@ const AllChannels = function() {
             return <span>
                 { pair[0] }
             </span>
+        } else {
+            return ''
         }
     }
 
@@ -156,7 +170,7 @@ const AllChannels = function() {
                     <th>Top poster</th>
                     <th>2nd top poster</th>
                     <th>Most popular hashtag</th>
-                    <th>Most popular reaction</th>
+                    <th>Most popular reactions</th>
                 </tr>
                 {
                     _.map(_.filter(stats.channels, c => c.stats.count > 0), channel =>
@@ -165,7 +179,14 @@ const AllChannels = function() {
                             { postMember(_.maxBy(_.toPairs(channel.stats.members), m => m[1].count)) }
                             { postMember(_.sortBy(_.toPairs(channel.stats.members), m => -m[1].count)[1]) }
                             <td><HashTag hashtag={nameFromPair(_.maxBy(_.toPairs(channel.stats.hashtags), h => h[1].count)) } /></td>
-                            <td>{nameFromPair(_.maxBy(_.toPairs(_.groupBy(channel.stats.reactions, 'emoji_name')), h => _.size(h[1]))) }</td>
+                            <td>
+                                {_.map(_.slice(_.sortBy(_.toPairs(channel.stats.reactions), h => -h[1].count), 0, 5), function(pair) {
+                                    // console.log(pair[0]);
+                                    // return 'a'
+                                    return <Emoji shortcode={pair[0]} />
+                                })}
+</td>
+                            {/*<td>{console.log(_.maxBy(_.toPairs(_.groupBy(channel.stats.reactions, 'emoji_name')), h => _.size(h[1]))) }</td>*/}
                         </tr>
                     )
                 }

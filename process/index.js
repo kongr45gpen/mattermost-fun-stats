@@ -25,7 +25,8 @@ _.forEach(channels, function(channel) {
         countRoot: 0,
         raccoons: 0,
         racoonedPosts: 0,
-        reactions: 0,
+        totalReactions: 0,
+        reactions: {},
         members: {}, // We define a channel member as someone who has posted in that channel
         hashtags: {},
         threads: {}
@@ -148,13 +149,20 @@ _.forEach(posts, function(post) {
 
     // Reaction counting
     _.forEach(post.reactions, function(reaction) {
-        channel.reactions += 1;
+        channel.totalReactions += 1;
         if (!reactions.hasOwnProperty(reaction.emoji_name)) {
             reactions[reaction.emoji_name] = {
                 count: 0
             }
         }
         reactions[reaction.emoji_name].count += 1;
+
+        if (!channel.reactions.hasOwnProperty(reaction.emoji_name)) {
+            channel.reactions[reaction.emoji_name] = {
+                count: 0
+            }
+        }
+        channel.reactions[reaction.emoji_name].count += 1;
 
         if (reaction.emoji_name === 'raccoon') {
             user.raccoonsEaten += 1;

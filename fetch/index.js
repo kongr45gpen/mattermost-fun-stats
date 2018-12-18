@@ -67,12 +67,12 @@ let fetch = async function() {
         while (true) {
             console.log("Fetching page #" + page + " of channel " + channel.name + " (" + Object.keys(posts).length + " total posts)");
             let newPosts = await client.getPosts(channel.id, page++, 500);
-            _.forEach(newPosts.posts, async function(post) {
+            await _.each(newPosts.posts, async function(post, id) {
                 if (post.has_reactions) {
-                    await delay(500);
-                    post.reactions = await client.getReactionsForPost(post.id);
+                //     await delay(100);
+                    newPosts.posts[id].reactions = await client.getReactionsForPost(post.id);
                 } else {
-                    post.reactions = {};
+                    newPosts.posts[id].reactions = {};
                 }
             });
             posts = {...posts, ...(newPosts.posts)};
