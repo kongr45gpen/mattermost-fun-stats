@@ -6,8 +6,10 @@ import serviceIcon1 from "../images/service-icon-1.png";
 import NumberFormat from "react-number-format";
 import serviceIcon3 from "../images/service-icon-3.png";
 import raccoon from "../images/raccoon.svg";
+import raccoon2 from "../images/raccoon2.svg";
 import WordCloud from 'react-wordcloud';
 import EmojiConvertor from "emoji-js";
+import Plot from 'react-plotly.js';
 
 import _ from "lodash";
 
@@ -182,6 +184,7 @@ const AllChannels = function () {
                     <th>2nd top poster</th>
                     <th>Most popular hashtag</th>
                     <th>Most popular reactions</th>
+                    <th>Raccoon percentage</th>
                 </tr>
                 {
                     _.map(_.filter(stats.channels, c => c.stats.count > 0), channel =>
@@ -194,12 +197,53 @@ const AllChannels = function () {
                             </td>
                             <td>
                                 {_.map(_.slice(_.sortBy(_.toPairs(channel.stats.reactions), h => -h[1].count), 0, 5), function (pair) {
-                                    // console.log(pair[0]);
-                                    // return 'a'
                                     return <Emoji shortcode={pair[0]}/>
                                 })}
                             </td>
+                            <td><img style={{width: '16px', 'margin-right': '2px'}} src={raccoon} alt=""/>
+                            { Math.round(100 * channel.stats.raccoonedPosts / channel.stats.countRoot) } % </td>
                             {/*<td>{console.log(_.maxBy(_.toPairs(_.groupBy(channel.stats.reactions, 'emoji_name')), h => _.size(h[1]))) }</td>*/}
+                        </tr>
+                    )
+                }
+            </table>
+        </div>
+    </section>
+};
+
+const AllUsers = function () {
+    const nameFromPair = function (pair) {
+        if (pair !== undefined) {
+            return <span>
+                {pair[0]}
+            </span>
+        } else {
+            return ''
+        }
+    }
+
+    return <section className="gray-bg section-padding">
+        <div className="container">
+            <table className="table">
+                <tr>
+                    <th className="text-right pl-1">User</th>
+                    <th>Most popular reactions TAKEN</th>
+                    <th>Most popular reactions GIVEN</th>
+                </tr>
+                {
+                    _.map(_.filter(stats.users, c => c.stats.count > 0), user =>
+                        <tr>
+                            <th className="text-right pr-1"><User id={user.id}/></th>
+                            <td>
+                                {_.map(_.slice(_.sortBy(_.toPairs(user.stats.reactionsTaken), h => -h[1].count), 0, 4), function (pair) {
+                                    return <Emoji shortcode={pair[0]}/>
+                                })}
+                            </td>
+                            <td>
+                                {_.map(_.slice(_.sortBy(_.toPairs(user.stats.reactionsGiven), h => -h[1].count), 0, 7), function (pair) {
+                                    return <Emoji shortcode={pair[0]}/>
+                                })}
+                            </td>
                         </tr>
                     )
                 }
@@ -231,12 +275,35 @@ const HashTagCloud = function () {
     </section>
 };
 
+const Hours = function() {
+    return <section className="gray-bg section-padding">
+    <div className="container">
+    <Plot
+    data={[
+      {
+        x: _.keys(stats.hours),
+        y: _.map(stats.hours, h => h.countWithoutAuto),
+        type: 'bar',
+        name: 'Text posts'
+      },{
+        x: _.keys(stats.hours),
+        y: _.map(stats.hours, h => h.count - h.countWithoutAuto),
+        type: 'bar',
+        name: 'Robot & system posts'
+      },
+    ]}
+    layout={ {width: 1024, height: 300, title: 'Time online', barmode:'stack' } }
+  /></div></section>
+}
+
 const Statistics = ({children}) => (
     <div>
         <LargeNumbers/>
         <LargestPosters/>
         <AllChannels/>
         <HashTagCloud/>
+        <AllUsers/>
+        <Hours/>
         <b>{Object.keys(stats.posts).length}</b>
     </div>
 )

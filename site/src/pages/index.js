@@ -12,17 +12,7 @@ import raccoon from '../images/raccoon.svg'
 
 const IndexPage = () => (
   <Layout>
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-      <button type="button" className="btn btn-primary">Primary</button>&nbsp;
-      <button type="button" className="btn btn-secondary">Secondary</button>&nbsp;
-      <button type="button" className="btn btn-success">Success</button>&nbsp;
-      <button type="button" className="btn btn-danger">Danger</button>&nbsp;
-      <button type="button" className="btn btn-warning">Warning</button>&nbsp;
-      <button type="button" className="btn btn-info">Info</button>&nbsp;
-      <button type="button" className="btn btn-light">Light</button>&nbsp;
-      <button type="button" className="btn btn-dark">Dark</button>&nbsp;
-    <p>Now go build something great.</p>
+    <h1>Mattermost Statistics</h1>
 
       <Statistics/>
 

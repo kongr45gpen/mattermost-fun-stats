@@ -25,7 +25,7 @@ _.forEach(channels, function(channel) {
         count: 0,
         countRoot: 0,
         raccoons: 0,
-        racoonedPosts: 0,
+        raccoonedPosts: 0,
         totalReactions: 0,
         reactions: {},
         members: {}, // We define a channel member as someone who has posted in that channel
@@ -43,7 +43,9 @@ _.forEach(users, function(user) {
         raccoonedPosts: 0,
         characters: 0,
         charactersLatin: 0,
-        words: 0
+        words: 0,
+        reactionsGiven: {},
+        reactionsTaken: {}
     }
 });
 
@@ -164,6 +166,25 @@ _.forEach(posts, function(post) {
             }
         }
         channel.reactions[reaction.emoji_name].count += 1;
+
+        if (user !== undefined) {
+            if (!user.reactionsTaken.hasOwnProperty(reaction.emoji_name)) {
+                user.reactionsTaken[reaction.emoji_name] = {
+                    count: 0
+                }
+            }
+            user.reactionsTaken[reaction.emoji_name].count += 1;
+        }
+
+        let reactor = users[reaction.user_id];
+        if (reactor !== undefined) {
+            if (!reactor.stats.reactionsGiven.hasOwnProperty(reaction.emoji_name)) {
+                reactor.stats.reactionsGiven[reaction.emoji_name] = {
+                    count: 0
+                }
+            }
+            reactor.stats.reactionsGiven[reaction.emoji_name].count += 1;
+        }
 
         if (reaction.emoji_name === 'raccoon') {
             user.raccoonsEaten += 1;
