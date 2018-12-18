@@ -11,3 +11,8 @@
 .img-thumbnail {
     height: 32px;
 }
+
+.hashtag-hash {
+    font-size: 0.8em;
+    vertical-align: middle;
+}

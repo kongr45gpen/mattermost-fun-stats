@@ -31,6 +31,17 @@ const User = function(props) {
     </span>
 };
 
+const HashTag = function(props) {
+    if (!_.isEmpty(props.hashtag)) {
+        return <span>
+            <span className="text-muted hashtag-hash">#</span>
+            { props.hashtag.props.children.replace(/^\#/, '') }
+        </span>
+    } else {
+        return <span />
+    }
+}
+
 const LargeNumbers = () => (
     <section className="gray-bg section-padding" id="service-page">
         <div className="container">
@@ -129,6 +140,13 @@ const AllChannels = function() {
             </td>;
         }
     };
+    const nameFromPair = function(pair) {
+        if (pair !== undefined) {
+            return <span>
+                { pair[0] }
+            </span>
+        }
+    }
 
     return <section className="gray-bg section-padding">
         <div className="container">
@@ -137,7 +155,8 @@ const AllChannels = function() {
                     <th className="text-right pl-1">Channel</th>
                     <th>Top poster</th>
                     <th>2nd top poster</th>
-                    <th># Talkative members</th>
+                    <th>Most popular hashtag</th>
+                    <th>Most popular reaction</th>
                 </tr>
                 {
                     _.map(_.filter(stats.channels, c => c.stats.count > 0), channel =>
@@ -145,7 +164,8 @@ const AllChannels = function() {
                             <th className="text-right pr-1"><Channel id={channel.id}/></th>
                             { postMember(_.maxBy(_.toPairs(channel.stats.members), m => m[1].count)) }
                             { postMember(_.sortBy(_.toPairs(channel.stats.members), m => -m[1].count)[1]) }
-                            <td>{ _.size(channel.stats.members) }</td>
+                            <td><HashTag hashtag={nameFromPair(_.maxBy(_.toPairs(channel.stats.hashtags), h => h[1].count)) } /></td>
+                            <td>{nameFromPair(_.maxBy(_.toPairs(_.groupBy(channel.stats.reactions, 'emoji_name')), h => _.size(h[1]))) }</td>
                         </tr>
                     )
                 }
