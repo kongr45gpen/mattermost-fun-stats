@@ -64,3 +64,9 @@ img.emoji {
     width: 1em;
     height: 1em;
 }
+
+.emoji-custom {
+    margin-top: -15px;
+    padding-left: 2px;
+    padding-right: 2px;
+}

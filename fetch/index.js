@@ -59,6 +59,17 @@ let fetch = async function() {
     console.log("Found " + channels.length + " channels.");
     fs.writeFile("data/channels.json", JSON.stringify(channels), err => {if (err) console.error(err)});
 
+    // Fetch all the custom emojis
+    let emojis = await client.getCustomEmojis(0, 500);
+    await _.each(emojis, async function(emoji) {
+       emoji['image'] = await client.getCustomEmojiImageUrl(emoji.id);
+    });
+    console.log("Found " + emojis.length + " emojis.");
+    fs.writeFile("data/emojis.json", JSON.stringify(emojis, null, 2), err => {if (err) console.error(err)});
+
+    console.log("Found " + channels.length + " channels.");
+    fs.writeFile("data/channels.json", JSON.stringify(channels), err => {if (err) console.error(err)});
+
     for (channel in channels) {
         await delay(500);
         channel = channels[channel];

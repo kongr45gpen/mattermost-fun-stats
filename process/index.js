@@ -6,6 +6,7 @@ const greekUtils = require('greek-utils');
 
 const channels = _.mapKeys(JSON.parse(fs.readFileSync('data/channels.json', 'utf8')), channel => channel.id);
 const users = _.mapKeys(JSON.parse(fs.readFileSync('data/users.json', 'utf8')), user => user.id);
+const emojis = _.mapKeys(JSON.parse(fs.readFileSync('data/emojis.json', 'utf8')), emoji => emoji.name);
 let posts = {};
 fs.readdirSync('data/posts/').forEach(function(file) {
     // Only read .json data
@@ -185,7 +186,8 @@ const output = {
     hours: hours,
     hashtags: hashtags,
     reactions: reactions,
-    words: words
+    words: words,
+    emojis: emojis,
 };
 fs.writeFileSync("site/data/stats.json", JSON.stringify(output, null, 2));
 
